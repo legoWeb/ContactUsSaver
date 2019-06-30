@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add
+            id="Polushkin_ContactUsSaver::contact_enquiries"
+            title="Contact Form Enquiries"
+            translate="title"
+            module="Polushkin_ContactUsSaver"
+            sortOrder="75"
+            parent="Magento_Backend::marketing_communications"
+            action="contactussaver/index"
+            resource="Polushkin_ContactUsSaver::contact_enquiries"
+        />
+    </menu>
+</config>
