@@ -7,3 +7,5 @@ A simple Magento 2 module that allows you to save contact form enquiries within 
 Enable enquiry saving in Stores -> Configuration -> General -> Contacts
 
 View the saved enquiries under Marketing -> Communications -> Contact Form Enquiries
+
+Problem with save buuton was fixed
