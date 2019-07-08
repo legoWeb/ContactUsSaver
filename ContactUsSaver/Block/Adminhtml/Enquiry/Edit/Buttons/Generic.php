@@ -37,13 +37,7 @@ class Generic
      */
     public function getEnquiryId()
     {
-        try {
-            return $this->enquiryRepository->getById(
-                $this->context->getRequest()->getParam('enquiry_id')
-            )->getId();
-        } catch (NoSuchEntityException $e) {
-            return null;
-        }
+        return $this->context->getRequest()->getParam('enquiry_id');
     }
 
     /**
