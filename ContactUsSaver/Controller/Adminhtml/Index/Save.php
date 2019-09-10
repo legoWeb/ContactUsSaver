@@ -2,9 +2,11 @@
 
 namespace Polushkin\ContactUsSaver\Controller\Adminhtml\Index;
 
-use Polushkin\ContactUsSaver\Controller\Adminhtml\ContactUsSaver;
-
-class Save extends ContactUsSaver
+/**
+ * Class Save
+ * @package Polushkin\ContactUsSaver\Controller\Adminhtml\Index
+ */
+class Save extends \Magento\Backend\App\Action
 {
     /**
      * @var \Magento\Framework\App\Request\DataPersistorInterface
@@ -12,41 +14,32 @@ class Save extends ContactUsSaver
     protected $dataPersistor;
 
     /**
-     * @var \Polushkin\ContactUsSaver\Model\EnquiryFactory
+     * @var \Polushkin\ContactUsSaver\Api\Data\EnquiryInterfaceFactory
      */
-    private $enquiryFactory;
+    protected $enquiryFactory;
 
     /**
      * @var \Polushkin\ContactUsSaver\Api\EnquiryRepositoryInterface
      */
-    private $enquiryRepository;
-
+    protected $enquiryRepository;
 
     /**
      * Save constructor.
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Registry $coreRegistry
      * @param \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor
-     * @param \Polushkin\ContactUsSaver\Model\EnquiryFactory $enquiryFactory
-     * @param \Polushkin\ContactUsSaver\Api\EnquiryRepositoryInterface $enquiryRepositoryInterface
-     * @param $resultPageFactory
-     * @param $resultForwardFactory
+     * @param \Polushkin\ContactUsSaver\Api\Data\EnquiryInterfaceFactory $enquiryFactory
+     * @param \Polushkin\ContactUsSaver\Api\EnquiryRepositoryInterface $enquiryRepository
      */
     public function __construct(
-        \Magento\Framework\Registry $registry,
         \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\Registry $coreRegistry,
         \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor,
-        \Polushkin\ContactUsSaver\Model\EnquiryFactory $enquiryFactory,
-        \Polushkin\ContactUsSaver\Api\EnquiryRepositoryInterface $enquiryRepository,
-        $resultPageFactory,
-        $resultForwardFactory
+        \Polushkin\ContactUsSaver\Api\Data\EnquiryInterfaceFactory $enquiryFactory,
+        \Polushkin\ContactUsSaver\Api\EnquiryRepositoryInterface $enquiryRepository
     ) {
+        $this->enquiryRepository = $enquiryRepository;
         $this->dataPersistor = $dataPersistor;
         $this->enquiryFactory = $enquiryFactory;
-        $this->enquiryRepository = $enquiryRepository;
-        parent::__construct($registry, $enquiryRepository, $resultPageFactory, $resultForwardFactory, $context);
-
+        parent::__construct($context);
     }
     public function execute()
     {
@@ -66,13 +59,13 @@ class Save extends ContactUsSaver
                 $data['enquiry_id'] = null;
             }
 
-            /** @var \Polushkin\ContactUsSaver\Model\Enquiry $model */
+            /** @var \Polushkin\ContactUsSaver\Api\Data\EnquiryInterfaceFactory $enquiryFactory */
             $model = $this->enquiryFactory->create();
 
             $id = $this->getRequest()->getParam('enquiry_id');
             if ($id) {
                 try {
-                    $model = $this->enRepository->getById($id);
+                    $model = $this->enquiryRepository->getById($id);
                 } catch (\Magento\Framework\Exception\LocalizedException $e) {
                     $this->messageManager->addErrorMessage(__('This Contact no longer exists.'));
                     return $resultRedirect->setPath('*/*/');
